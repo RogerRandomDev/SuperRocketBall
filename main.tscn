@@ -1,0 +1,112 @@
+[gd_scene load_steps=6 format=3 uid="uid://ct7stmd3picre"]
+
+[ext_resource type="Script" path="res://Objects/gameBall.gd" id="1_iyrfq"]
+[ext_resource type="Script" path="res://Sprite2D.gd" id="2_nrj43"]
+[ext_resource type="Script" path="res://UI.gd" id="3_w4b86"]
+[ext_resource type="Texture2D" uid="uid://dma7aivkas1ik" path="res://textures/explosionFlash.png" id="5_asml4"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4hxio"]
+friction = 0.5
+bounce = 0.5
+absorbent = true
+
+[node name="Node2D" type="Node2D"]
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+z_index = 74
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D2"]
+color = Color(0.407843, 0.407843, 0.407843, 1)
+invert_enable = true
+polygon = PackedVector2Array(280, 16, 312, 48, 312, 240, 296, 256, 24, 256, 8, 240, 8, 48, 40, 16)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D2"]
+polygon = PackedVector2Array(8, 48, 40, 16, 280, 16, 312, 48, 312, 240, 296, 256, 24, 256, 8, 240, 8, 48, -96, 40, -96, 384, 416, 384, 416, -96, -96, -96, -96, 40, 8, 48)
+
+[node name="gameBall" type="RigidDynamicBody2D" parent="."]
+position = Vector2(112, 72)
+mass = 0.1
+physics_material_override = SubResource( "PhysicsMaterial_4hxio" )
+continuous_cd = 2
+contacts_reported = 2
+can_sleep = false
+angular_damp = 0.1
+script = ExtResource( "1_iyrfq" )
+
+[node name="curveManager" type="Node2D" parent="."]
+visible = false
+position = Vector2(160, 143.75)
+scale = Vector2(1.25, 288.5)
+script = ExtResource( "2_nrj43" )
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource( "3_w4b86" )
+
+[node name="v" type="VBoxContainer" parent="UI"]
+offset_right = 320.0
+offset_bottom = 288.0
+
+[node name="0" type="HBoxContainer" parent="UI/v"]
+clip_contents = true
+minimum_size = Vector2(0, 16)
+offset_right = 320.0
+offset_bottom = 31.0
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+
+[node name="Button" type="Button" parent="UI/v/0"]
+clip_contents = true
+offset_right = 18.0
+offset_bottom = 31.0
+size_flags_vertical = 3
+text = "<"
+
+[node name="1" type="MarginContainer" parent="UI/v/0"]
+clip_contents = true
+offset_left = 22.0
+offset_right = 298.0
+offset_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button2" type="Button" parent="UI/v/0"]
+clip_contents = true
+offset_left = 302.0
+offset_right = 320.0
+offset_bottom = 31.0
+size_flags_vertical = 3
+text = ">"
+
+[node name="1" type="MarginContainer" parent="UI/v"]
+offset_top = 35.0
+offset_right = 320.0
+offset_bottom = 253.0
+size_flags_vertical = 3
+
+[node name="2" type="HBoxContainer" parent="UI/v"]
+minimum_size = Vector2(0, 24)
+offset_top = 257.0
+offset_right = 320.0
+offset_bottom = 288.0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI/v/2"]
+offset_right = 31.0
+offset_bottom = 31.0
+max_value = 1.0
+step = 0.025
+value = 1.0
+fill_mode = 4
+texture_progress = ExtResource( "5_asml4" )
+
+[node name="Rockets" type="Label" parent="UI/v/2"]
+offset_left = 35.0
+offset_top = 2.0
+offset_right = 134.0
+offset_bottom = 28.0
+text = "ROCKETS:0/3"
+
+[connection signal="mouse_entered" from="UI/v" to="UI" method="_on_v_mouse_entered"]
+[connection signal="mouse_exited" from="UI/v" to="UI" method="_on_v_mouse_exited"]
+[connection signal="button_down" from="UI/v/0/Button" to="UI" method="_on_button_button_down"]
+[connection signal="button_down" from="UI/v/0/Button2" to="UI" method="_on_button_2_button_down"]
